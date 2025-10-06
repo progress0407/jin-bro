@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>목소리로 오렌지 키우기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Ready Screen -->
+        <div id="readyScreen" class="screen active">
+            <div class="text-center space-y-8">
+                <div class="space-y-3">
+                    <h1>🍊</h1>
+                    <h2>목소리로<br/>오렌지 키우기</h2>
+                    <p class="subtitle">큰 소리를 내서 오렌지를 키워보세요!</p>
+                </div>
+
+                <div class="orange-container">
+                    <div class="orange-wrapper" id="readyOrange" style="width: 150px; height: 150px;">
+                        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                            <defs>
+                                <radialGradient id="orangeGrad" cx="35%" cy="35%">
+                                    <stop offset="0%" stop-color="#ffb84d" />
+                                    <stop offset="50%" stop-color="#ff9933" />
+                                    <stop offset="100%" stop-color="#ff8000" />
+                                </radialGradient>
+                                <filter id="shadow">
+                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                                </filter>
+                            </defs>
+
+                            <circle cx="50" cy="50" r="45" fill="url(#orangeGrad)" filter="url(#shadow)" />
+
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#ff8c1a" stroke-width="0.5" opacity="0.3" />
+
+                            <ellipse cx="38" cy="35" rx="12" ry="18" fill="white" opacity="0.3" />
+                            <ellipse cx="35" cy="32" rx="6" ry="8" fill="white" opacity="0.5" />
+
+                            <ellipse cx="50" cy="8" rx="8" ry="12" fill="#7cb342" transform="rotate(-15 50 8)" />
+                            <ellipse cx="50" cy="8" rx="8" ry="12" fill="#8bc34a" transform="rotate(15 50 8)" />
+
+                            <rect x="48" y="5" width="4" height="8" fill="#6d4c41" rx="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card space-y-3">
+                    <div class="info-item">
+                        <div class="icon-circle">🎤</div>
+                        <div class="info-content">
+                            <p class="info-title">마이크에 대고 소리내기</p>
+                            <p class="info-desc">큰 소리일수록 오렌지가 커져요</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-circle">⏱️</div>
+                        <div class="info-content">
+                            <p class="info-title">10초 동안 도전</p>
+                            <p class="info-desc">최대 크기가 기록됩니다</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="startGame()">시작하기</button>
+            </div>
+        </div>
+
+        <!-- Playing Screen -->
+        <div id="playingScreen" class="screen">
+            <div class="text-center space-y-8">
+                <div class="timer">
+                    <div class="timer-number" id="timerDisplay">10</div>
+                    <div class="timer-label">초 남음</div>
+                </div>
+
+                <div class="playing-container">
+                    <div class="orange-wrapper" id="playingOrange" style="width: 50px; height: 50px;">
+                        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                            <defs>
+                                <radialGradient id="orangeGrad2" cx="35%" cy="35%">
+                                    <stop offset="0%" stop-color="#ffb84d" />
+                                    <stop offset="50%" stop-color="#ff9933" />
+                                    <stop offset="100%" stop-color="#ff8000" />
+                                </radialGradient>
+                                <filter id="shadow2">
+                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                                </filter>
+                            </defs>
+
+                            <circle cx="50" cy="50" r="45" fill="url(#orangeGrad2)" filter="url(#shadow2)" />
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#ff8c1a" stroke-width="0.5" opacity="0.3" />
+                            <ellipse cx="38" cy="35" rx="12" ry="18" fill="white" opacity="0.3" />
+                            <ellipse cx="35" cy="32" rx="6" ry="8" fill="white" opacity="0.5" />
+                            <ellipse cx="50" cy="8" rx="8" ry="12" fill="#7cb342" transform="rotate(-15 50 8)" />
+                            <ellipse cx="50" cy="8" rx="8" ry="12" fill="#8bc34a" transform="rotate(15 50 8)" />
+                            <rect x="48" y="5" width="4" height="8" fill="#6d4c41" rx="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="volume-card">
+                        <div class="volume-header">
+                            <span class="volume-label">소리 크기</span>
+                            <span class="volume-value" id="volumePercent">0%</span>
+                        </div>
+                        <div class="volume-bar-bg">
+                            <div class="volume-bar" id="volumeBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <p class="mic-prompt">🎤 크게 소리내보세요!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="screen">
+            <div class="text-center space-y-8">
+                <div class="space-y-2">
+                    <div class="result-emoji">🎉</div>
+                    <h2 class="result-title">게임 완료!</h2>
+                    <p class="result-subtitle" id="sizeLabel">보통 오렌지</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="orange-container" style="margin-bottom: 1.5rem;">
+                        <div class="orange-wrapper" id="resultOrange" style="width: 200px; height: 200px;">
+                            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                                <defs>
+                                    <radialGradient id="orangeGrad3" cx="35%" cy="35%">
+                                        <stop offset="0%" stop-color="#ffb84d" />
+                                        <stop offset="50%" stop-color="#ff9933" />
+                                        <stop offset="100%" stop-color="#ff8000" />
+                                    </radialGradient>
+                                    <filter id="shadow3">
+                                        <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                                    </filter>
+                                </defs>
+
+                                <circle cx="50" cy="50" r="45" fill="url(#orangeGrad3)" filter="url(#shadow3)" />
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#ff8c1a" stroke-width="0.5" opacity="0.3" />
+                                <ellipse cx="38" cy="35" rx="12" ry="18" fill="white" opacity="0.3" />
+                                <ellipse cx="35" cy="32" rx="6" ry="8" fill="white" opacity="0.5" />
+                                <ellipse cx="50" cy="8" rx="8" ry="12" fill="#7cb342" transform="rotate(-15 50 8)" />
+                                <ellipse cx="50" cy="8" rx="8" ry="12" fill="#8bc34a" transform="rotate(15 50 8)" />
+                                <rect x="48" y="5" width="4" height="8" fill="#6d4c41" rx="2" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="score-card space-y-3">
+                        <div style="color: white;">
+                            <div class="score-number" id="finalScore">0</div>
+                            <div class="score-label">최고 점수</div>
+                        </div>
+
+                        <div class="score-divider">
+                            <div class="score-desc">
+                                친구들과 점수를 비교해보세요!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <button class="btn" onclick="resetGame()">다시 도전하기</button>
+
+                    <div class="card space-y-2" style="text-align: left;">
+                        <p class="tip-title">💡 팁</p>
+                        <p class="tip-content">
+                            • 마이크에 가까이 대고 소리내보세요<br/>
+                            • "아~" 하고 길게 소리내면 효과적!<br/>
+                            • 친구들과 누가 더 큰 오렌지를 만드는지 대결해보세요
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
